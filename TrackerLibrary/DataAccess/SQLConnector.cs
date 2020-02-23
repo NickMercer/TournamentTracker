@@ -19,16 +19,9 @@ namespace TrackerLibrary.DataAccess
             throw new NotImplementedException();
         }
 
-        // TODO - Make the CreatePrize method actually save to the database
-        /// <summary>
-        /// Saves a new prize to the database
-        /// </summary>
-        /// <param name="model">The prize information</param>
-        /// <returns>The prize information, including the unique identifier</returns>
         public void CreatePrize(PrizeModel model)
         {
-            model.Id = 1;
-         
+            throw new NotImplementedException();
         }
 
         public void CreateTeam(TeamModel model)
