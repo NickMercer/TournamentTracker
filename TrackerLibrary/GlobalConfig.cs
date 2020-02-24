@@ -38,5 +38,10 @@ namespace TrackerLibrary
         {
             return ConfigurationManager.AppSettings[key];
         }
+
+        public static string CnnString(string name)
+        {
+            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+        }
     }
 }
