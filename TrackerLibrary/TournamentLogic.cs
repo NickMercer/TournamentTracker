@@ -124,6 +124,7 @@ namespace TrackerLibrary
 
         private static void CompleteTournament(TournamentModel model)
         {
+            GlobalConfig.Connection.CompleteTournament(model);
             TeamModel winners = model.Rounds.Last().First().Winner;
             TeamModel runnerUp = model.Rounds.Last().First().Entries.Where(x => x.TeamCompeting != winners).First().TeamCompeting;
 
@@ -218,6 +219,7 @@ namespace TrackerLibrary
                                 if (matchupEntry.ParentMatchup.Id == m.Id)
                                 {
                                     matchupEntry.TeamCompeting = m.Winner;
+                                    matchupEntry.TeamCompetingId = m.WinnerId;
                                     GlobalConfig.Connection.UpdateMatchup(roundMatchup);
                                 }
                             }
@@ -236,6 +238,7 @@ namespace TrackerLibrary
                 if(m.Entries.Count == 1) //Bye week
                 {
                     m.Winner = m.Entries[0].TeamCompeting;
+                    m.WinnerId = m.Entries[0].TeamCompetingId;
                     continue;
                 }
 
@@ -244,10 +247,12 @@ namespace TrackerLibrary
                     if(m.Entries[0].Score < m.Entries[1].Score)
                     {
                         m.Winner = m.Entries[0].TeamCompeting;
+                        m.WinnerId = m.Entries[0].TeamCompetingId;
                     }
                     else if(m.Entries[1].Score < m.Entries[0].Score)
                     {
                         m.Winner = m.Entries[1].TeamCompeting;
+                        m.WinnerId = m.Entries[1].TeamCompetingId;
                     }
                     else
                     {
@@ -259,10 +264,12 @@ namespace TrackerLibrary
                     if (m.Entries[0].Score > m.Entries[1].Score)
                     {
                         m.Winner = m.Entries[0].TeamCompeting;
+                        m.WinnerId = m.Entries[0].TeamCompetingId;
                     }
                     else if (m.Entries[1].Score > m.Entries[0].Score)
                     {
                         m.Winner = m.Entries[1].TeamCompeting;
+                        m.WinnerId = m.Entries[1].TeamCompetingId;
                     }
                     else
                     {

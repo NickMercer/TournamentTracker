@@ -19,10 +19,17 @@ namespace TrackerLibrary
             MailAddress fromMailAddress = new MailAddress(GlobalConfig.AppKeyLookup("senderEmail"), GlobalConfig.AppKeyLookup("senderDisplayName"));
 
             MailMessage mail = new MailMessage();
+
             foreach (string email in to)
             {
-                mail.To.Add(email); 
+                mail.To.Add(email);
             }
+
+            if(mail.To.Count == 0)
+            {
+                mail.To.Add("Mailer@TournamentTracker.mail");
+            }
+
             foreach (string email in bcc)
             {
                 mail.Bcc.Add(email);

@@ -15,7 +15,13 @@ namespace TrackerLibrary.DataAccess
 
         public void CompleteTournament(TournamentModel model)
         {
-            //throw new NotImplementedException();
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
+            {
+                var tourney = new DynamicParameters();
+                tourney.Add("@Id", model.Id);
+
+                connection.Execute("dbo.spTournaments_Complete", tourney, commandType: CommandType.StoredProcedure);
+            }
         }
 
         public void CreatePerson(PersonModel model)
@@ -287,7 +293,30 @@ namespace TrackerLibrary.DataAccess
 
         public void UpdateMatchup(MatchupModel model)
         {
-            //throw new NotImplementedException();
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
+            {
+                var param = new DynamicParameters();
+                if (model.Winner != null)
+                {
+                    param.Add("@Id", model.Id);
+                    param.Add("@WinnerId", model.Winner.Id);
+
+                    connection.Execute("dbo.spMatchups_Update", param, commandType: CommandType.StoredProcedure); 
+                }
+
+                foreach (MatchupEntryModel entry in model.Entries)
+                {
+                    if (entry.TeamCompeting != null)
+                    {
+                        param = new DynamicParameters();
+                        param.Add("@Id", entry.Id);
+                        param.Add("@TeamCompetingId", entry.TeamCompetingId);
+                        param.Add("@Score", entry.Score);
+
+                        connection.Execute("dbo.spMatchupEntries_Update", param, commandType: CommandType.StoredProcedure); 
+                    }
+                }
+            }
         }
     }
 }
